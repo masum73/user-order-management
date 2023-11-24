@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from "mongoose";
 import { IUser, TAddress, TName, TOrder, UserModel } from "./user.interface";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
 const nameSchema = new Schema<TName>({
   firstName: { type: String, required: true },
@@ -42,6 +45,20 @@ const userSchema = new Schema<IUser, UserModel>({
       required: false,
     },
   ],
+});
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+userSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
 });
 
 userSchema.statics.isUserExists = async function (id: string) {
