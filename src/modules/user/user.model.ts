@@ -48,6 +48,7 @@ const userSchema = new Schema<IUser, UserModel>({
 });
 
 userSchema.pre("save", async function (next) {
+  // pre middleware for password hashing which will work on create() and save()
   const user = this;
   user.password = await bcrypt.hash(
     user.password,
@@ -57,11 +58,13 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.post("save", function (doc, next) {
+  // post middleware for password
   doc.password = "";
   next();
 });
 
 userSchema.statics.isUserExists = async function (id: string) {
+  //creating static method here
   const existingUser = await User.findOne({ userId: id });
   return existingUser;
 };

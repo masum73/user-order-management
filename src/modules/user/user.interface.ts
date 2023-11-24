@@ -30,6 +30,6 @@ export interface IUser {
   orders?: TOrder[];
 }
 export interface UserModel extends Model<IUser> {
-  isUserExists(id: number): Promise<IUser | null>;
+  isUserExists(id: number): Promise<IUser | null>; //using static here
 }
 // export type UserModel = Model<IUser>;

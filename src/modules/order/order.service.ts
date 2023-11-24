@@ -7,6 +7,7 @@ const createOrderIntoDB = async (orderData: IOrder, userId: number) => {
     if (user === null) {
       throw new Error("User not found");
     }
+    // if the user have orders then pushing the object to the order array and saving it
     if (user?.orders?.length) {
       user.orders.push(orderData);
       user.save();
@@ -33,6 +34,7 @@ const getTotalPriceFromDB = async (userId: number) => {
   if (userId) {
     const user = await User.findOne({ userId: userId });
     let totalPrice = 0;
+    // calculating total price by mapping order which is an array of object
     user?.orders?.map((o) => {
       totalPrice += o.price * o.quantity;
     });
