@@ -43,7 +43,6 @@ const deleteUser = async (id: number) => {
     throw new Error("User not found!");
   }
   const result = await User.deleteOne({ userId: id });
-  console.log(result);
   return result;
 };
 

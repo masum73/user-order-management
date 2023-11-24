@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
+import userValidationSchema from "./user.validation";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    const result = await UserServices.createUserIntoDB(userData);
+
+    const zodParsedData = userValidationSchema.parse(userData);
+    const result = await UserServices.createUserIntoDB(zodParsedData);
 
     res.status(201).json({
       success: true,
       message: "User created successfully!",
-      data: result,
+      data: result, // need to hide _id and orders for better view
     });
   } catch (error: any) {
     res.status(404).json({
@@ -70,9 +73,10 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
+    const zodParsedData = userValidationSchema.parse(userData);
     const userId = parseInt(req.params.userId);
 
-    const result = await UserServices.updateUserIntoDB(userId, userData);
+    const result = await UserServices.updateUserIntoDB(userId, zodParsedData);
     res.status(200).json({
       success: true,
       message: "User updated successfully!",
