@@ -9,14 +9,17 @@ const createUser = async (req: Request, res: Response) => {
 
     res.status(201).json({
       success: true,
-      message: "User is created successfully",
+      message: "User created successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "User not found",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User already exists!",
+      },
     });
   }
 };
@@ -27,14 +30,17 @@ const getAllUsers = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "All Users are retrieved successfully",
+      message: "Users fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "User not found",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
@@ -46,14 +52,17 @@ const getSingleUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "Single User is retrieved successfully",
+      message: "Users fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "User not found",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
@@ -66,14 +75,17 @@ const updateUser = async (req: Request, res: Response) => {
     const result = await UserServices.updateUserIntoDB(userId, userData);
     res.status(200).json({
       success: true,
-      message: "User updated successfully",
+      message: "User updated successfully!",
       data: result,
     });
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
@@ -81,17 +93,20 @@ const updateUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
-    const result = await UserServices.deleteUser(userId);
+    await UserServices.deleteUser(userId);
     res.status(200).json({
       success: true,
-      message: "User deleted successfully",
-      data: result,
+      message: "User deleted successfully!",
+      data: null,
     });
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };

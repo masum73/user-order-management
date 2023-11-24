@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
 
@@ -5,18 +6,21 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
     const userId = parseInt(req.params.userId);
-    const result = await OrderServices.createOrderIntoDB(orderData, userId);
+    await OrderServices.createOrderIntoDB(orderData, userId);
 
     res.status(201).json({
       success: true,
-      message: "User Order is created successfully",
-      data: result,
+      message: "Order created successfully!",
+      data: null,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "Something went wrong",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
@@ -30,11 +34,14 @@ const getAllOrders = async (req: Request, res: Response) => {
       message: "Order fetched successfully!",
       data: { orders },
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "Something went wrong",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
@@ -48,11 +55,14 @@ const totalPrice = async (req: Request, res: Response) => {
       message: "Total price calculated successfully!",
       data: { totalPrice },
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "Something went wrong",
-      error: error,
+      message: error?.message,
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };

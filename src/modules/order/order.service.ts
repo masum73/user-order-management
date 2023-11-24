@@ -22,9 +22,10 @@ const createOrderIntoDB = async (orderData: IOrder, userId: number) => {
 const getAllOrdersFromDB = async (userId: number) => {
   if (userId) {
     const user = await User.findOne({ userId: userId });
-    return user?.orders;
-  } else {
-    throw new Error("User order not found");
+    if (user === null) {
+      throw new Error("User not found");
+    }
+    return user?.orders; // need to hide order. _id for better view
   }
 };
 
@@ -35,6 +36,9 @@ const getTotalPriceFromDB = async (userId: number) => {
     user?.orders?.map((o) => {
       totalPrice += o.price * o.quantity;
     });
+    if (user === null) {
+      throw new Error("User not found");
+    }
     return totalPrice;
   }
 };
