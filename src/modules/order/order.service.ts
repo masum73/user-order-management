@@ -19,6 +19,16 @@ const createOrderIntoDB = async (orderData: IOrder, userId: number) => {
   }
 };
 
+const getAllOrdersFromDB = async (userId: number) => {
+  if (userId) {
+    const user = await User.findOne({ userId: userId });
+    return user?.orders;
+  } else {
+    throw new Error("User order not found");
+  }
+};
+
 export const OrderServices = {
   createOrderIntoDB,
+  getAllOrdersFromDB,
 };
