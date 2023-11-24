@@ -18,7 +18,7 @@ export type TOrder = {
 };
 
 export interface IUser {
-  id: string;
+  userId: number;
   username: string;
   password: string;
   fullName: TName;
@@ -27,7 +27,7 @@ export interface IUser {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
-  orders: TOrder;
+  orders?: TOrder[];
 }
 
 export type UserModel = Model<IUser>;

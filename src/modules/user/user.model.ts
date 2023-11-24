@@ -12,14 +12,16 @@ const addressSchema = new Schema<TAddress>({
   country: { type: String, required: true },
 });
 
-const orderSchema = new Schema<TOrder>({
-  productName: { type: String, required: true },
-  price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
-});
+const orderSchema = new Schema<TOrder[]>([
+  {
+    productName: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+  },
+]);
 
 const userSchema = new Schema<IUser, UserModel>({
-  id: { type: String, required: true, unique: true },
+  userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   fullName: {
@@ -34,10 +36,12 @@ const userSchema = new Schema<IUser, UserModel>({
     type: addressSchema,
     required: true,
   },
-  orders: {
-    type: orderSchema,
-    required: true,
-  },
+  orders: [
+    {
+      type: orderSchema,
+      required: false,
+    },
+  ],
 });
 
 export const User = model<IUser>("User", userSchema);
