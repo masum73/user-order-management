@@ -29,5 +29,7 @@ export interface IUser {
   address: TAddress;
   orders?: TOrder[];
 }
-
-export type UserModel = Model<IUser>;
+export interface UserModel extends Model<IUser> {
+  isUserExists(id: number): Promise<IUser | null>;
+}
+// export type UserModel = Model<IUser>;

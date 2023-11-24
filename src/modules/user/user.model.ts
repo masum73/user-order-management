@@ -44,4 +44,9 @@ const userSchema = new Schema<IUser, UserModel>({
   ],
 });
 
-export const User = model<IUser>("User", userSchema);
+userSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await User.findOne({ userId: id });
+  return existingUser;
+};
+
+export const User = model<IUser, UserModel>("User", userSchema);

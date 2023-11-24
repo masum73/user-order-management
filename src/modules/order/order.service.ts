@@ -28,7 +28,18 @@ const getAllOrdersFromDB = async (userId: number) => {
   }
 };
 
+const getTotalPriceFromDB = async (userId: number) => {
+  if (userId) {
+    const user = await User.findOne({ userId: userId });
+    let totalPrice = 0;
+    user?.orders?.map((o) => {
+      totalPrice += o.price * o.quantity;
+    });
+    return totalPrice;
+  }
+};
 export const OrderServices = {
   createOrderIntoDB,
   getAllOrdersFromDB,
+  getTotalPriceFromDB,
 };

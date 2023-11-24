@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
 
@@ -68,10 +69,10 @@ const updateUser = async (req: Request, res: Response) => {
       message: "User updated successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "Something went wrong",
+      message: error?.message || "Something went wrong",
       error: error,
     });
   }
@@ -86,10 +87,10 @@ const deleteUser = async (req: Request, res: Response) => {
       message: "User deleted successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: "Something went wrong",
+      message: error?.message || "Something went wrong",
       error: error,
     });
   }
