@@ -6,12 +6,12 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
     const userId = parseInt(req.params.userId);
-    await OrderServices.createOrderIntoDB(orderData, userId);
+    const result = await OrderServices.createOrderIntoDB(orderData, userId);
 
     res.status(201).json({
       success: true,
       message: "Order created successfully!",
-      data: null,
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({

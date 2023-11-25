@@ -2,7 +2,7 @@ import { User } from "../user/user.model";
 import { IOrder } from "./order.interface";
 
 const createOrderIntoDB = async (orderData: IOrder, userId: number) => {
-  if (userId) {
+  if (userId !== null) {
     const user = await User.findOne({ userId: userId });
     if (user === null) {
       throw new Error("User not found");
@@ -10,13 +10,16 @@ const createOrderIntoDB = async (orderData: IOrder, userId: number) => {
     // if the user have orders then pushing the object to the order array and saving it
     if (user?.orders?.length) {
       user.orders.push(orderData);
-      user.save();
+      await user.save();
       return user;
     } else {
+      console.log(user.orders);
       user.orders = [orderData];
-      user.save();
+      await user.save();
       return user;
     }
+  } else {
+    throw new Error("User Id not valid");
   }
 };
 

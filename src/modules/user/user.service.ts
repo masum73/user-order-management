@@ -15,7 +15,7 @@ const createUserIntoDB = async (userData: IUser) => {
 
 const getAllUsersFromDB = async () => {
   const result = await User.find().select(
-    "-_id -password -fullName._id -orders._id -address._id -__v"
+    "-_id -password -fullName._id  -address._id -__v"
   ); // hiding unwanted fields
   return result;
 };
