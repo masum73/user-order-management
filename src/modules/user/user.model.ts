@@ -25,19 +25,23 @@ const orderSchema = new Schema<TOrder[]>([
 
 const userSchema = new Schema<IUser, UserModel>({
   userId: { type: Number, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  username: {
+    type: String,
+    required: [true, "username is required"],
+    unique: true,
+  },
+  password: { type: String, required: [true, "password is required"] },
   fullName: {
     type: nameSchema,
     required: true,
   },
-  age: { type: Number, required: true },
-  email: { type: String, required: true },
-  isActive: { type: Boolean, required: true },
-  hobbies: { type: [String], required: true },
+  age: { type: Number, required: [true, "age is required"] },
+  email: { type: String, required: [true, "email is required"] },
+  isActive: { type: Boolean, required: [true, "isActive is required"] },
+  hobbies: { type: [String], required: [true, "hobby is required"] },
   address: {
     type: addressSchema,
-    required: true,
+    required: [true, "address is required"],
   },
   orders: [
     {

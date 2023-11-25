@@ -6,7 +6,10 @@ const createUserIntoDB = async (userData: IUser) => {
     // checking if the is user is already then throwing an error msg
     throw new Error("User already exits!");
   }
-  const result = await User.create(userData);
+  await User.create(userData);
+  const result = await User.findOne({ userId: userData.userId }).select(
+    "-_id -password -orders -fullName._id -address._id -__v"
+  ); // hiding unwanted fields
   return result;
 };
 
